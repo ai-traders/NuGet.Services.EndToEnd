@@ -1,0 +1,16 @@
+Microsoft.Extensions.Configuration 
+Microsoft.Extensions.Configuration.Abstractions
+Microsoft.Extensions.Configuration.Binder 
+Microsoft.Extensions.Configuration.FileExtensions 
+Microsoft.Extensions.Configuration.Json 
+Moq 
+xunit 
+Newtonsoft.Json
+Microsoft.AspNetCore.WebUtilities
+Microsoft.Extensions.Primitives
+NuGet.Frameworks
+NuGet.Packaging 
+NuGet.Protocol
+NuGet.Versioning
+xunit.runner.visualstudio
+Microsoft.NET.Test.Sdk

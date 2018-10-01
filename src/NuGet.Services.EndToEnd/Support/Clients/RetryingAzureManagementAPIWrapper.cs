@@ -4,21 +4,22 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NuGet.Services.AzureManagement;
 using Xunit.Abstractions;
 
 namespace NuGet.Services.EndToEnd.Support
 {
     public class RetryingAzureManagementAPIWrapper : IRetryingAzureManagementAPIWrapper
     {
+        /*
         private readonly IAzureManagementAPIWrapper _inner;
         private readonly TimeSpan _sleepDuration;
 
         public RetryingAzureManagementAPIWrapper(IAzureManagementAPIWrapper inner, TimeSpan sleepDuration)
         {
+            throw new NotSupportedException("azure");
             _inner = inner ?? throw new ArgumentNullException(nameof(inner));
             _sleepDuration = sleepDuration;
-        }
+        }*/
 
         public Task<string> GetCloudServicePropertiesAsync(
             string subscription,
@@ -28,6 +29,8 @@ namespace NuGet.Services.EndToEnd.Support
             ITestOutputHelper logger,
             CancellationToken token)
         {
+            throw new NotSupportedException("azure");
+            /*
             return RetryUtility.ExecuteWithRetry(
                 () => _inner.GetCloudServicePropertiesAsync(
                     subscription,
@@ -38,7 +41,7 @@ namespace NuGet.Services.EndToEnd.Support
                 ex => ex is AzureManagementException,
                 maxAttempts: RetryUtility.DefaultMaxAttempts,
                 sleepDuration: _sleepDuration,
-                logger: logger);
+                logger: logger); */
         }
     }
 }

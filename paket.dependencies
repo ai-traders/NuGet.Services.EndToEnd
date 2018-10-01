@@ -1,0 +1,20 @@
+source https://api.nuget.org/v3/index.json
+framework netcoreapp2.1, netstandard2.0
+storage: none
+
+nuget Microsoft.Extensions.Configuration 
+nuget Microsoft.Extensions.Configuration.Abstractions
+nuget Microsoft.Extensions.Configuration.Binder 
+nuget Microsoft.Extensions.Configuration.FileExtensions 
+nuget Microsoft.Extensions.Configuration.Json 
+nuget Moq 
+nuget xunit 
+nuget Newtonsoft.Json
+nuget Microsoft.AspNetCore.WebUtilities
+nuget Microsoft.Extensions.Primitives
+nuget NuGet.Frameworks 4.3.0
+nuget NuGet.Packaging 4.3.0
+nuget NuGet.Protocol 4.3.0
+nuget NuGet.Versioning 4.3.0
+nuget xunit.runner.visualstudio
+nuget Microsoft.NET.Test.Sdk

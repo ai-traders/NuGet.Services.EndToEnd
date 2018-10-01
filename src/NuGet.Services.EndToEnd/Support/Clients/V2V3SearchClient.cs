@@ -9,7 +9,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using NuGet.Services.AzureManagement;
 using NuGet.Versioning;
 using Xunit;
 using Xunit.Abstractions;
@@ -25,12 +24,11 @@ namespace NuGet.Services.EndToEnd.Support
         private readonly TestSettings _testSettings;
         private readonly IRetryingAzureManagementAPIWrapper _azureManagementAPIWrapper;
 
-        public V2V3SearchClient(SimpleHttpClient httpClient, V3IndexClient v3IndexClient, TestSettings testSettings, IRetryingAzureManagementAPIWrapper azureManagementAPIWrapper)
+        public V2V3SearchClient(SimpleHttpClient httpClient, V3IndexClient v3IndexClient, TestSettings testSettings)
         {
             _httpClient = httpClient;
             _v3IndexClient = v3IndexClient;
             _testSettings = testSettings;
-            _azureManagementAPIWrapper = azureManagementAPIWrapper;
         }
 
         public async Task<V3SearchResponse> QueryAsync(SearchServiceProperties searchService, string queryString, ITestOutputHelper logger)
@@ -196,10 +194,11 @@ namespace NuGet.Services.EndToEnd.Support
                                 serviceDetails.Slot,
                                 logger,
                                 CancellationToken.None);
-
+            throw new NotSupportedException("azure");
+            /*
             var cloudService = AzureHelper.ParseCloudServiceProperties(result);
 
-            return new SearchServiceProperties(ClientHelper.ConvertToHttpsAndClean(cloudService.Uri), cloudService.InstanceCount);
+            return new SearchServiceProperties(ClientHelper.ConvertToHttpsAndClean(cloudService.Uri), cloudService.InstanceCount);*/
         }
 
         private static string BuildAutocompleteQueryString(

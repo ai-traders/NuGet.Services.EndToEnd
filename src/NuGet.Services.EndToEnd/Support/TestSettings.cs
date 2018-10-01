@@ -7,7 +7,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using NuGet.Services.Configuration;
 
 namespace NuGet.Services.EndToEnd.Support
 {
@@ -33,7 +32,7 @@ namespace NuGet.Services.EndToEnd.Support
         {
         }
 
-        public AzureManagementAPIWrapperConfiguration AzureManagementAPIWrapperConfiguration { get; set; }
+        //public AzureManagementAPIWrapperConfiguration AzureManagementAPIWrapperConfiguration { get; set; }
 
         public string V3IndexUrl { get; set; }
 
@@ -112,13 +111,13 @@ namespace NuGet.Services.EndToEnd.Support
         private static async Task<TestSettings> CreateInternalAsync(string configurationName)
         {
             var builder = new ConfigurationBuilder()
-             .SetBasePath(Path.Combine(Environment.CurrentDirectory, "config"))
+             .SetBasePath(Path.Combine(Environment.CurrentDirectory, "Config"))
              .AddJsonFile(configurationName + ".json");
 
             var configurationRoot = builder.Build();
 
-            var configuration = new E2ESecretConfigurationReader(configurationRoot, new ConfigurationRootSecretReaderFactory(configurationRoot));
-            await configuration.InjectSecrets();
+            // var configuration = new E2ESecretConfigurationReader(configurationRoot, new ConfigurationRootSecretReaderFactory(configurationRoot));
+            // await configuration.InjectSecrets();
 
             var testSettings = new TestSettings();
             configurationRoot.GetSection("TestSettings").Bind(testSettings);

@@ -6,23 +6,27 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using NuGet.Services.KeyVault;
 
 
 namespace NuGet.Services.EndToEnd.Support
 {
+
     public class E2ESecretConfigurationReader : IConfigurationRoot
     {
         private IConfigurationRoot _configuration;
-        private ISecretReaderFactory _secretReaderFactory;
-        private Lazy<ISecretInjector> _secretInjector;
 
-        public E2ESecretConfigurationReader(IConfigurationRoot config, ISecretReaderFactory secretReaderFactory)
+        public IEnumerable<IConfigurationProvider> Providers => throw new NotImplementedException();
+
+        /*
+private ISecretReaderFactory _secretReaderFactory;
+private Lazy<ISecretInjector> _secretInjector;*/
+
+        public E2ESecretConfigurationReader(IConfigurationRoot config)
         {
             _configuration = config;
-            _secretReaderFactory = secretReaderFactory;
+            // _secretReaderFactory = secretReaderFactory;
 
-            _secretInjector = new Lazy<ISecretInjector>(InitSecretInjector, isThreadSafe: false);
+            // _secretInjector = new Lazy<ISecretInjector>(InitSecretInjector, isThreadSafe: false);
         }
 
         public async Task InjectSecrets()
@@ -33,7 +37,7 @@ namespace NuGet.Services.EndToEnd.Support
             {
                 if (configPair.Value != null)
                 {
-                    _configuration[configPair.Key] = await _secretInjector.Value.InjectAsync(configPair.Value);
+                   // _configuration[configPair.Key] = await _secretInjector.Value.InjectAsync(configPair.Value);
                 }
             }
         }
@@ -71,9 +75,10 @@ namespace NuGet.Services.EndToEnd.Support
             return _configuration.GetReloadToken();
         }
 
+/*
         private ISecretInjector InitSecretInjector()
         {
             return _secretReaderFactory.CreateSecretInjector(_secretReaderFactory.CreateSecretReader());
-        }
+        }*/
     }
 }

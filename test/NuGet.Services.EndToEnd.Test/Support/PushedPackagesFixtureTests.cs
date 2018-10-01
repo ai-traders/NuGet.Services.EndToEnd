@@ -21,7 +21,8 @@ namespace NuGet.Services.EndToEnd.Support
         public PushedPackagesFixtureTests()
         {
             _galleryClient = new Mock<IGalleryClient>();
-            _fixture = new PushedPackagesFixture(_galleryClient.Object);
+            _fixture = new PushedPackagesFixture();
+            _fixture.GalleryClient = _galleryClient.Object;
             _logger = new Mock<ITestOutputHelper>().Object;
         }
 

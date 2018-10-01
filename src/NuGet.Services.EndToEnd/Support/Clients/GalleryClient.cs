@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using NuGet.Services.AzureManagement;
 using NuGet.Versioning;
 using Xunit.Abstractions;
 
@@ -25,16 +24,14 @@ namespace NuGet.Services.EndToEnd.Support
 
         private readonly SimpleHttpClient _httpClient;
         private readonly TestSettings _testSettings;
-        private readonly IRetryingAzureManagementAPIWrapper _azureManagementAPIWrapper;
 
         private Uri _galleryUrl = null;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
 
-        public GalleryClient(SimpleHttpClient httpClient, TestSettings testSettings, IRetryingAzureManagementAPIWrapper azureManagementAPIWrapper)
+        public GalleryClient(SimpleHttpClient httpClient, TestSettings testSettings)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _testSettings = testSettings ?? throw new ArgumentNullException(nameof(testSettings));
-            _azureManagementAPIWrapper = azureManagementAPIWrapper;
         }
 
         public async Task<Uri> GetGalleryUrlAsync(ITestOutputHelper logger)
@@ -53,34 +50,36 @@ namespace NuGet.Services.EndToEnd.Support
                     return _galleryUrl;
                 }
 
-                if (_azureManagementAPIWrapper == null || _testSettings.GalleryConfiguration.ServiceDetails == null)
+                if (_testSettings.GalleryConfiguration.ServiceDetails == null)
                 {
                     _galleryUrl = new Uri(_testSettings.GalleryConfiguration.OverrideServiceUrl);
                     logger.WriteLine($"Configured gallery mode: use hardcoded URL {_galleryUrl}");
                 }
-                else
-                {
-                    var serviceDetails = _testSettings.GalleryConfiguration.ServiceDetails;
+                return _galleryUrl;
+                // else
+                // {
+                //     var serviceDetails = _testSettings.GalleryConfiguration.ServiceDetails;
 
-                    logger.WriteLine($"Configured gallery mode: get service properties from Azure. " +
-                       $"Subscription: {serviceDetails.Subscription}, " +
-                       $"Resource group: {serviceDetails.ResourceGroup}, " +
-                       $"Service name: {serviceDetails.Name}");
+                //     logger.WriteLine($"Configured gallery mode: get service properties from Azure. " +
+                //        $"Subscription: {serviceDetails.Subscription}, " +
+                //        $"Resource group: {serviceDetails.ResourceGroup}, " +
+                //        $"Service name: {serviceDetails.Name}");
 
-                    string result = await _azureManagementAPIWrapper.GetCloudServicePropertiesAsync(
-                                    serviceDetails.Subscription,
-                                    serviceDetails.ResourceGroup,
-                                    serviceDetails.Name,
-                                    serviceDetails.Slot,
-                                    logger,
-                                    CancellationToken.None);
+                //     string result = await _azureManagementAPIWrapper.GetCloudServicePropertiesAsync(
+                //                     serviceDetails.Subscription,
+                //                     serviceDetails.ResourceGroup,
+                //                     serviceDetails.Name,
+                //                     serviceDetails.Slot,
+                //                     logger,
+                //                     CancellationToken.None);
 
-                    var cloudService = AzureHelper.ParseCloudServiceProperties(result);
+                //     //throw new NotSupportedException("azure");
+                //     /*var cloudService = AzureHelper.ParseCloudServiceProperties(result);
 
-                    _galleryUrl = ClientHelper.ConvertToHttpsAndClean(cloudService.Uri);
+                //     _galleryUrl = ClientHelper.ConvertToHttpsAndClean(cloudService.Uri);
 
-                    logger.WriteLine($"Gallery URL to use: {_galleryUrl}");
-                }
+                //     logger.WriteLine($"Gallery URL to use: {_galleryUrl}");*/
+                // }
             }
             finally
             {

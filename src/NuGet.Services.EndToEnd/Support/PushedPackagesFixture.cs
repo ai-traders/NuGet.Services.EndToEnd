@@ -39,14 +39,17 @@ namespace NuGet.Services.EndToEnd.Support
         private readonly IDictionary<PackageType, string> _packageIds = new Dictionary<PackageType, string>();
         private IGalleryClient _galleryClient;
 
+        public IGalleryClient GalleryClient { get => _galleryClient; set => _galleryClient = value; }
+
         public PushedPackagesFixture()
         {
+            _galleryClient = new GalleryClient(new SimpleHttpClient(), TestSettings.Create());
         }
 
-        public PushedPackagesFixture(IGalleryClient galleryClient)
-        {
-            _galleryClient = galleryClient;
-        }
+        // public PushedPackagesFixture(IGalleryClient galleryClient)
+        // {
+        //     _galleryClient = galleryClient;
+        // }
 
         public override async Task InitializeAsync()
         {
