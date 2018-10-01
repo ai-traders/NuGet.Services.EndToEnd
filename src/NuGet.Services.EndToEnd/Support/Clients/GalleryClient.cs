@@ -120,7 +120,9 @@ namespace NuGet.Services.EndToEnd.Support
                 request.Headers.Add(ApiKeyHeader, _testSettings.ApiKey);
                 request.Headers.Add(NuGetProtocolHeader, NuGetProtocolVersion);
 
-                request.Content = new StreamContent(nupkgStream);
+                var content =  new MultipartFormDataContent("------" + Guid.NewGuid() + "----");
+                request.Content = content;
+                content.Add(new StreamContent(nupkgStream), "ignored", "ignored");
 
                 using (var response = await httpClient.SendAsync(request))
                 {
