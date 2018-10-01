@@ -110,7 +110,7 @@ namespace NuGet.Services.EndToEnd.Support
         public async Task PushAsync(Stream nupkgStream, ITestOutputHelper logger)
         {
             var galleryEndpoint = await GetGalleryUrlAsync(logger);
-            var url = $"{galleryEndpoint}/api/v2/package";
+            var url = $"{galleryEndpoint.AbsoluteUri.TrimEnd('/')}/v2/package";
             using (var httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Put, url))
             {

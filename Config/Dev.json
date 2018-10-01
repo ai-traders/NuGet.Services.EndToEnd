@@ -2,7 +2,7 @@
   "TestSettings": {
     "V3IndexUrl": "http://localhost:9090/v3/index.json",
     "TrustedHttpsCertificates": [],
-    "ApiKey": "API_KEY",
+    "ApiKey": "NUGET-SERVER-API-KEY",
     "GalleryConfiguration": {
       "OverrideServiceUrl": "http://localhost:9090"
     },
