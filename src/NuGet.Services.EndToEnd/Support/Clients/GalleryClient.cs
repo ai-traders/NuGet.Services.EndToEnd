@@ -55,7 +55,6 @@ namespace NuGet.Services.EndToEnd.Support
                     _galleryUrl = new Uri(_testSettings.GalleryConfiguration.OverrideServiceUrl);
                     logger.WriteLine($"Configured gallery mode: use hardcoded URL {_galleryUrl}");
                 }
-                return _galleryUrl;
                 // else
                 // {
                 //     var serviceDetails = _testSettings.GalleryConfiguration.ServiceDetails;
@@ -91,16 +90,22 @@ namespace NuGet.Services.EndToEnd.Support
 
         public async Task<IList<string>> AutocompletePackageIdsAsync(string id, bool includePrerelease, string semVerLevel, ITestOutputHelper logger)
         {
-            var galleryEndpoint = await GetGalleryUrlAsync(logger);
+            var galleryEndpoint = await GetGalleryUrlStringAsync(logger);
             var serviceEndpoint = $"{galleryEndpoint}/api/v2/package-ids";
             var uri = AppendAutocompletePackageIdsQueryString(serviceEndpoint, id, includePrerelease, semVerLevel);
 
             return await _httpClient.GetJsonAsync<List<string>>(uri, logger);
         }
 
+        private async Task<string> GetGalleryUrlStringAsync(ITestOutputHelper logger)
+        {
+            var url = await GetGalleryUrlAsync(logger);
+            return url.AbsoluteUri.TrimEnd('/');
+        }
+
         public async Task<IList<string>> AutocompletePackageVersionsAsync(string id, bool includePrerelease, string semVerLevel, ITestOutputHelper logger)
         {
-            var galleryEndpoint = await GetGalleryUrlAsync(logger);
+            var galleryEndpoint = await GetGalleryUrlStringAsync(logger);
             var serviceEndpoint = $"{galleryEndpoint}/api/v2/package-versions";
             var uri = AppendAutocompletePackageVersionsQueryString($"{serviceEndpoint}/{id}", includePrerelease, semVerLevel);
 
@@ -109,8 +114,8 @@ namespace NuGet.Services.EndToEnd.Support
 
         public async Task PushAsync(Stream nupkgStream, ITestOutputHelper logger)
         {
-            var galleryEndpoint = await GetGalleryUrlAsync(logger);
-            var url = $"{galleryEndpoint.AbsoluteUri.TrimEnd('/')}/v2/package";
+            var galleryEndpoint = await GetGalleryUrlStringAsync(logger);
+            var url = $"{galleryEndpoint}/v2/package";
             using (var httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Put, url))
             {
@@ -178,7 +183,7 @@ namespace NuGet.Services.EndToEnd.Support
 
         private async Task SendToPackageAsync(HttpMethod method, string id, string version, ITestOutputHelper logger)
         {
-            var galleryEndpoint = await GetGalleryUrlAsync(logger);
+            var galleryEndpoint = await GetGalleryUrlStringAsync(logger);
             var url = $"{galleryEndpoint}/api/v2/package/{id}/{version}";
             using (var httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(method, url))

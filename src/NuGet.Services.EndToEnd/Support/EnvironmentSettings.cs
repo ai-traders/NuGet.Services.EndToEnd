@@ -24,7 +24,14 @@ namespace NuGet.Services.EndToEnd.Support
         /// The name of the configuration to be used. The location of all configurations is assumed to be in target directory under Config folder.
         /// The config file name to be used is [ConfigurationName].json
         /// </summary>
-        public static string ConfigurationName => GetEnvironmentVariable("ConfigurationName", required: true);
+        public static string ConfigurationName {
+            get {
+                var name = GetEnvironmentVariable("ConfigurationName", required: false);
+                if(name == null)
+                    return "Dev";
+                return name;
+            }
+        }
 
         /// <summary>
         /// The path to the signed package that should be used for tests.
