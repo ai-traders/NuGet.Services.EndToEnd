@@ -17,7 +17,7 @@ namespace NuGet.Services.EndToEnd.Support
 {
     public class V2V3SearchClient
     {
-        private const int MinPort = 44301;
+        private const int MinPort = 9090;
 
         private readonly V3IndexClient _v3IndexClient;
         private readonly SimpleHttpClient _httpClient;
@@ -118,7 +118,7 @@ namespace NuGet.Services.EndToEnd.Support
                 var port = MinPort + instanceIndex;
                 var uriBuilder = new UriBuilder(searchServices.Uri)
                 {
-                    Scheme = "https",
+                    Scheme = "http",
                     Port = port,
                     Path = "/search/query"
                 };
