@@ -184,7 +184,7 @@ namespace NuGet.Services.EndToEnd.Support
         private async Task SendToPackageAsync(HttpMethod method, string id, string version, ITestOutputHelper logger)
         {
             var galleryEndpoint = await GetGalleryUrlStringAsync(logger);
-            var url = $"{galleryEndpoint}/api/v2/package/{id}/{version}";
+            var url = $"{galleryEndpoint}/v2/package/{id}/{version}";
             using (var httpClient = new HttpClient())
             using (var request = new HttpRequestMessage(method, url))
             {
