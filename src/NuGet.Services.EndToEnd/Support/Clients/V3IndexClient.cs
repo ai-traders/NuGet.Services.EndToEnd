@@ -27,7 +27,7 @@ namespace NuGet.Services.EndToEnd.Support
         public async Task<IReadOnlyList<string>> GetSearchBaseUrlsAsync(ITestOutputHelper logger)
         {
             var v3Index = await GetV3IndexAsync(logger);
-            return GetResourceUrls(v3Index, t => t.Type.StartsWith("SearchGalleryQueryService/"));
+            return GetResourceUrls(v3Index, t => t.Type.StartsWith("SearchQueryService/"));
         }
 
         public async Task<IReadOnlyList<string>> GetFlatContainerBaseUrlsAsync(ITestOutputHelper logger)
